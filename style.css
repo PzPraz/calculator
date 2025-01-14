@@ -1,0 +1,76 @@
+body, html{
+    height: 100%;
+}
+
+.main{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator{
+    width: 500px;
+    min-height: 700px;
+    background-color: rgb(31, 31, 31);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 1em 0 black;
+}
+
+.screen{
+    padding: 15px 20px;
+    border-radius: 10px;
+    background-color:  rgb(51, 56, 62);
+    margin-bottom: 20px;
+    color: rgb(227, 227, 227);  ;
+}
+
+.screen-last{
+    text-align:right;
+    min-height:70px;
+    font-size: 40px;
+}
+
+.screen-current{
+    min-height: 100px;
+    font-size: 80px;
+    text-align: right;
+    overflow-x: auto;
+}
+
+.buttons-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-input{
+    display: flex;
+    min-width: 107.5px;
+    min-height: 107.5px;
+    border-radius: 50%;
+    background-color: rgb(41, 42, 46);
+    border: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+}
+
+.AC{
+    background-color: rgb(195, 238, 208);
+}
+
+.negative, .factorial, .division, .multiplication, .substraction,
+.addition {
+    background-color: rgb(90, 178, 241);;
+}
+
+.result{
+    background-color: rgb(211, 227, 253);;
+}
+
+.number-btn{
+    color: rgb(139, 140, 142);;
+}
+
