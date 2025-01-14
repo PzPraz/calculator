@@ -127,19 +127,14 @@ inputBtns.forEach((btn) => {
             clear()
             return
         } else if(e.target.textContent == '+/-'){
-            curScreen.textContent = '-'
+            setNegative()
             return
         } else if(pressed == 'del'){
-            newText = curScreen.textContent.slice(0, curScreen.textContent.length - 1)
-            if(newText == ''){
-                newText = '0'
-            }
-            curScreen.textContent = newText
+            deleteLastNum()
             return
         } else if(pressed == '='){
-            if(lastScreen.textContent == '0'){
-                return
-            }
+            appendResult()
+            return
         }
 
         if(shouldResetScreen){
@@ -165,24 +160,22 @@ function doOperation(op){
         shouldResetScreen = true
     
     } else if(haveOperationsBefore){
+        
+        
         secondNum = curScreen.textContent
 
-        console.log(firstNum);
-        console.log(secondNum);
-        console.log(theOp);
+        
         let result;
-        if(theOp == '+'){
-            result = (+firstNum) + (+secondNum)
-        } else if(theOp == '-'){
-            result = (+firstNum) - (+secondNum)
-        } else if(theOp == 'X'){
-            result = (+firstNum) * (+secondNum)
-        } else if(theOp == '÷'){
-            result = (+firstNum) / (+secondNum)
-        } else if(theOp == '!'){
-            result = factorial(+firstNum)
+        
+        result = evaluate()
+        
+        if (!result) {
+            lastScreen.textContent = firstNum + ' ' + op
+            theOp = op
+            return
         }
         
+
         lastScreen.textContent = result + ' ' + op
         theOp = op
         curScreen.textContent = result
@@ -196,9 +189,21 @@ function doOperation(op){
         curScreen.textContent = firstNum
         lastScreen.textContent = firstNum + ' ' + op
         shouldResetScreen = true
+        theOp = op
 
+    } else{
+        theOp = op
+        haveOperationsBefore = true
     }
 }   
+
+function deleteLastNum(){
+    newText = curScreen.textContent.slice(0, curScreen.textContent.length - 1)
+    if(newText == ''){
+        newText = '0'
+    }
+    curScreen.textContent = newText
+}
 
 function factorial(n) {
     if (n < 0) {
@@ -236,9 +241,41 @@ function evaluate(){
 
     secondNum = curScreen.textContent
 
-    return evaluate(theOp, firstNum, secondNum)
+    return operate(theOp, firstNum, secondNum)
+}
 
+function appendResult(){
+    if(shouldResetScreen) return
 
+    result = evaluate()
+
+    lastScreen.textContent = `${firstNum} ${theOp} ${secondNum} = ${result}`
+    curScreen.textContent = result
+    firstNum = result
+    secondNum = null
+    shouldResetScreen = true
+    haveOperationsBefore = false
+}
+
+function setNegative(){
+    if(shouldResetScreen) resetScreen()
+    if(curScreen.textContent == '0' || curScreen.textContent == ''){
+        curScreen.textContent = '-'
+    } else if(curScreen.textContent == '-'){
+        curScreen.textContent = '0'
+    }
+    
+    else if(curScreen.textContent.includes('-')){
+        firstNum = curScreen.textContent
+        curScreen.textContent = Number(firstNum) * -1
+        firstNum = curScreen.textContent
+    }
+        
+    else{
+        firstNum = curScreen.textContent
+        curScreen.textContent = `-${+firstNum}`
+        firstNum = '-' + firstNum
+    }
 }
 
 function add(a, b){
@@ -259,12 +296,12 @@ function divide(a, b){
 
 function operate(operator, a, b){
     a = Number(a)
-    b = NUmber(b)
+    b = Number(b)
 
     switch (operator) {
         case '+':
           return add(a, b)
-        case '−':
+        case '-':
           return substract(a, b)
         case 'X':
           return multiply(a, b)
